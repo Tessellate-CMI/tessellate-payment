@@ -1,16 +1,23 @@
-export function pay(api_url: string, api_token: string, uuid: string) {
-    let buyerEmail = ''
-    let buyerPhone = ''
-    let buyerFirstName = ''
-    let buyerLastName = ''
-    let order_id = ''
-    let amount = 0.0
-    let uid = ''
-    let private_key = ''
-    let merchantId = ''
-    let checksum = ''
-    let currency = 'INR'
-    let isocurrency = 365
+import { createDirectus, rest, staticToken, readItem } from '@directus/sdk'
+
+export async function pay(api_url: string, api_token: string, uuid: string) {
+    const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
+
+    const result = await client.request(readItem('payment', uuid))
+    console.log(result)
+
+    const buyerEmail = result.buyerEmail
+    const buyerPhone = result.buyerPhone
+    const buyerFirstName = result.buyerFirstName
+    const buyerLastName = result.buyerLastName
+    const order_id = uuid
+    const amount = result.amount
+    const uid = result.uid
+    const private_key = ''
+    const merchantId = ''
+    const checksum = ''
+    const currency = 'INR'
+    const isocurrency = 365
 
     return (
         <html lang='en'>
