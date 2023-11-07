@@ -1,23 +1,14 @@
 import { html } from '@elysiajs/html'
 import { Elysia } from 'elysia'
-import { exit } from 'process'
+import env from 'env-var'
 import { pay } from './pay'
 import { receive } from './receive'
 
-let host = process.env.HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost')
-let port = process.env.PORT || 3000
+const host = env.get('HOST').default('0.0.0.0').asString()
+const port = env.get('PORT').default('3000').asPortNumber()
 
-if (!process.env.API_URL) {
-    console.log('API_URL not set!')
-    exit()
-}
-if (!process.env.API_TOKEN) {
-    console.log('API_TOKEN not set!')
-    exit()
-}
-
-let api_url = process.env.API_URL ?? ''
-let api_token = process.env.API_TOKEN ?? ''
+const api_url = env.get('API_URL').required().asUrlString()
+const api_token = env.get('API_TOKEN').required().asString()
 
 const app = new Elysia()
     .use(html())
@@ -28,4 +19,4 @@ const app = new Elysia()
     .post('/receive', receive)
     .listen({ hostname: host, port: port })
 
-console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`)
+console.log(`Payment Server Running: ${app.server?.hostname}:${app.server?.port}`)
