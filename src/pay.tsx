@@ -1,23 +1,43 @@
 import { createDirectus, rest, staticToken, readItem } from '@directus/sdk'
+import dateFormat from 'dateformat'
 
-export async function pay(api_url: string, api_token: string, uuid: string) {
+export async function pay(
+    api_url: string,
+    api_token: string,
+    uuid: string,
+    merchantId: string,
+    private_key: string,
+    keydata: string
+) {
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
 
     const result = await client.request(readItem('payment', uuid))
     console.log(result)
 
+    let sha256 = require('sha256')
+
     const buyerEmail = result.buyerEmail
     const buyerPhone = result.buyerPhone
     const buyerFirstName = result.buyerFirstName
     const buyerLastName = result.buyerLastName
-    const order_id = uuid
-    const amount = result.amount
+    const order_id = uuid.replace(/-/g, '').substr(0, 25)
+    let amount = result.amount
+    amount += '.00'
     const uid = result.uid
-    const private_key = ''
-    const merchantId = ''
-    const checksum = ''
-    const currency = 'INR'
-    const isocurrency = 365
+    const currency = 356
+    const isocurrency = 'INR'
+
+    const now = new Date()
+    const alldata =
+        buyerEmail +
+        buyerFirstName +
+        buyerLastName +
+        amount +
+        order_id +
+        dateFormat(now, 'yyyy-mm-dd')
+    console.log({ alldata })
+    const checksum = sha256(keydata + '@' + alldata)
+    console.log({ checksum })
 
     return (
         <html lang='en'>
@@ -46,11 +66,11 @@ export async function pay(api_url: string, api_token: string, uuid: string) {
                     <input type='hidden' name='amount' value={amount.toString()} />
                     <input type='hidden' name='uid' value={uid} />
                     <input type='hidden' name='privatekey' value={private_key} />
-                    <input type='hidden' name='merid' value={merchantId} />
+                    <input type='hidden' name='mercid' value={merchantId} />
                     <input type='hidden' name='kittype' value='server_side_sdk' />
                     <input type='hidden' name='checksum' value={checksum} />
-                    <input type='hidden' name='currency' value={currency} />
-                    <input type='hidden' name='isocurrency' value={isocurrency.toString()} />
+                    <input type='hidden' name='currency' value={currency.toString()} />
+                    <input type='hidden' name='isocurrency' value={isocurrency} />
                 </form>
             </body>
         </html>

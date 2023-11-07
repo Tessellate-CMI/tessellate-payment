@@ -7,14 +7,18 @@ import { receive } from './receive'
 const host = env.get('HOST').default('0.0.0.0').asString()
 const port = env.get('PORT').default('3000').asPortNumber()
 
-const api_url = env.get('API_URL').required().asUrlString()
-const api_token = env.get('API_TOKEN').required().asString()
+const api_url = env.get('DIRECTUS_API_URL').required().asUrlString()
+const api_token = env.get('DIRECTUS_API_TOKEN').required().asString()
+
+const merchantId = env.get('AIRPAY_MERCHANT_ID').required().asString()
+const private_key = env.get('AIRPAY_PRIVATEKEY').required().asString()
+const keydata = env.get('AIRPAY_KEYDATA').required().asString()
 
 const app = new Elysia()
     .use(html())
     .get('/', () => 'OK')
     .get('/send/:uuid', ({ params: { uuid } }: { params: { uuid: string } }) =>
-        pay(api_url, api_token, uuid)
+        pay(api_url, api_token, uuid, merchantId, private_key, keydata)
     )
     .post('/receive', receive)
     .listen({ hostname: host, port: port })
