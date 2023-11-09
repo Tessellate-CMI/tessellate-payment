@@ -70,4 +70,21 @@ export async function receive(
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
     const result = await client.request(createItem('transactions', serverData))
     console.log(result)
+
+    return (
+        <html lang='en'>
+            <head>
+                <meta charset='UTF-8' />
+                <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+                <title>Tessellate Payment Result</title>
+                <script>{`setTimeout(function () {document.getElementById('sendtoairpay').submit()}, 1000)`}</script>
+            </head>
+
+            <body>
+                <div>
+                    {serverData.TRANSACTIONID}
+                </div>
+            </body>
+        </html>
+    )
 }
