@@ -20,7 +20,8 @@ export async function pay(
     const buyerPhone = result.buyerPhone
     const buyerFirstName = result.buyerFirstName
     const buyerLastName = result.buyerLastName
-    const order_id = uuid.replace(/-/g, '').substr(0, 25)
+    const order_id = result.orderid
+    // const order_id = uuid.replace(/-/g, '').substr(0, 25)
     let amount = result.amount
     amount += '.00'
     const uid = result.uid
@@ -34,6 +35,7 @@ export async function pay(
         buyerLastName +
         amount +
         order_id +
+        uid +
         dateFormat(now, 'yyyy-mm-dd')
     console.log({ alldata })
     const checksum = sha256(keydata + '@' + alldata)
