@@ -21,7 +21,10 @@ const app = new Elysia()
     .get('/send/:uuid', ({ params: { uuid } }: { params: { uuid: string } }) =>
         pay(api_url, api_token, uuid, merchantId, private_key, keydata)
     )
-    .post('/receive', function (req, res, next) {
+    // .post('/receive', function (req, res, next) {
+    //     receive(api_url, api_token, merchantId, username, req, res, next)
+    // })
+    .post('/receive', (req, res, next) => {
         receive(api_url, api_token, merchantId, username, req, res, next)
     })
     .listen({ hostname: host, port: port })

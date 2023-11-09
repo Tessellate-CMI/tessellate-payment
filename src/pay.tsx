@@ -71,6 +71,7 @@ export async function pay(
                     <input type='hidden' name='checksum' value={checksum} />
                     <input type='hidden' name='currency' value={currency.toString()} />
                     <input type='hidden' name='isocurrency' value={isocurrency} />
+                    <input type='hidden' name='customvar' value='STEMSregistration' />
                 </form>
             </body>
         </html>

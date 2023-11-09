@@ -5,9 +5,9 @@ export async function receive(
     api_token: string,
     mid: string,
     username: string,
-    req,
-    res,
-    next
+    req: any,
+    res: any,
+    next: any
 ) {
     if (req.body.CUSTOMVAR !== 'STEMSregistration') {
         return
@@ -57,16 +57,17 @@ export async function receive(
     console.log(req.body.ap_SecureHash)
     console.log(txnhash)
 
-    const serverData
-    serverData.TRANSACTIONID = req.body.TRANSACTIONID
-    serverData.APTRANSACTIONID = req.body.ATRANSACTIONID
-    serverData.AMOUNT = req.body.AMOUNT
-    serverData.TRANSACTIONSTATUS = req.body.TRANSACTIONSTATUS
-    serverData.MESSAGE = req.body.MESSAGE
-    serverData.ap_SecureHash = req.body.ap_SecureHash
-    serverData.CUSTOMVAR = req.body.CUSTOMVAR
+    const serverData = {
+        TRANSACTIONID: req.body.TRANSACTIONID,
+        APTRANSACTIONID: req.body.ATRANSACTIONID,
+        AMOUNT: req.body.AMOUNT,
+        TRANSACTIONSTATUS: req.body.TRANSACTIONSTATUS,
+        MESSAGE: req.body.MESSAGE,
+        ap_SecureHash: req.body.ap_SecureHash,
+        CUSTOMVAR: req.body.CUSTOMVAR
+    }
 
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
-    const result = await client.request(createItem(transactions, serverData))
+    const result = await client.request(createItem('transactions', serverData))
     console.log(result)
 }
