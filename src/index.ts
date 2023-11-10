@@ -18,8 +18,8 @@ const username = env.get('AIRPAY_USERNAME').required().asString()
 const app = new Elysia()
     .use(html())
     .get('/', () => 'OK')
-    .get('/send/:uuid', ({ params: { uuid } }: { params: { uuid: string } }) =>
-        pay(api_url, api_token, uuid, merchantId, private_key, keydata)
+    .get('/send/:orderid', ({ params: { orderid } }: { params: { orderid: string } }) =>
+        pay(api_url, api_token, orderid, merchantId, private_key, keydata)
     )
     // .post('/receive', function (req, res, next) {
     //     receive(api_url, api_token, merchantId, username, req, res, next)

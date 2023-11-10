@@ -4,14 +4,14 @@ import dateFormat from 'dateformat'
 export async function pay(
     api_url: string,
     api_token: string,
-    uuid: string,
+    orderid: string,
     merchantId: string,
     private_key: string,
     keydata: string
 ) {
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
 
-    const result = await client.request(readItem('payment', uuid))
+    const result = await client.request(readItem('payment', orderid))
     console.log(result)
 
     let sha256 = require('sha256')
@@ -21,9 +21,7 @@ export async function pay(
     const buyerFirstName = result.buyerFirstName
     const buyerLastName = result.buyerLastName
     const order_id = result.orderid
-    // const order_id = uuid.replace(/-/g, '').substr(0, 25)
-    let amount = result.amount
-    amount += '.00'
+    const amount = result.amount + '.00' //amount should always be integer when read from directus
     const uid = result.uid
     const currency = 356
     const isocurrency = 'INR'
