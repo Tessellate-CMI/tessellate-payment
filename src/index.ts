@@ -1,5 +1,5 @@
 import { html } from '@elysiajs/html'
-import { Elysia, t } from 'elysia'
+import { Elysia } from 'elysia'
 import env from 'env-var'
 import { pay } from './pay'
 import { receive } from './receive'
