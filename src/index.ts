@@ -1,5 +1,5 @@
 import { html } from '@elysiajs/html'
-import { Elysia } from 'elysia'
+import { Elysia, t } from 'elysia'
 import env from 'env-var'
 import { pay } from './pay'
 import { receive } from './receive'
@@ -21,12 +21,7 @@ const app = new Elysia()
     .get('/send/:orderid', ({ params: { orderid } }: { params: { orderid: string } }) =>
         pay(api_url, api_token, orderid, merchantId, private_key, keydata)
     )
-    // .post('/receive', function (req, res, next) {
-    //     receive(api_url, api_token, merchantId, username, req, res, next)
-    // })
-    .post('/receive', (req, res, next) => {
-        receive(api_url, api_token, merchantId, username, req, res, next)
-    })
+    .post('/receive', ({ body }) => receive(api_url, api_token, merchantId, username, body))
     .listen({ hostname: host, port: port })
 
 console.log(`Payment Server Running: ${app.server?.hostname}:${app.server?.port}`)
