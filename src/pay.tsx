@@ -1,43 +1,17 @@
 import { createDirectus, rest, staticToken, readItem } from '@directus/sdk'
-// import dateFormat from 'dateformat'
 
-export async function pay(
-    api_url: string,
-    api_token: string,
-    orderid: string
-    // merchantId: string,
-    // private_key: string,
-    // keydata: string
-) {
+export async function pay(api_url: string, api_token: string, orderid: string) {
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
 
     const result = await client.request(readItem('payment', orderid))
     console.log(result)
-
-    // let sha256 = require('sha256')
 
     const buyerEmail = result.buyerEmail
     const buyerPhone = result.buyerPhone
     const buyerFirstName = result.buyerFirstName
     const buyerLastName = result.buyerLastName
     const order_id = result.orderid
-    const amount = result.amount //amount should always be integer when read from directus
-    // const uid = result.uid
-    // const currency = 356
-    // const isocurrency = 'INR'
-
-    // const now = new Date()
-    // const alldata =
-    //     buyerEmail +
-    //     buyerFirstName +
-    //     buyerLastName +
-    //     amount +
-    //     order_id +
-    //     uid +
-    //     dateFormat(now, 'yyyy-mm-dd')
-    // console.log({ alldata })
-    // const checksum = sha256(keydata + '@' + alldata)
-    // console.log({ checksum })
+    const amount = result.amount
 
     return (
         <html lang='en'>
