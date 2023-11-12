@@ -1,4 +1,4 @@
-import { createDirectus, rest, staticToken, createItem } from '@directus/sdk'
+import { createDirectus, createItem, rest, staticToken } from '@directus/sdk'
 
 export async function receive(api_url: string, api_token: string, body: any) {
     if (body.CUSTOMVAR.startsWith('stems2023')) {
@@ -17,7 +17,6 @@ export async function receive(api_url: string, api_token: string, body: any) {
 
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
     const result = await client.request(createItem('transactions', serverData))
-    // console.log('Directus Updated')
 
     return (
         <html lang='en'>

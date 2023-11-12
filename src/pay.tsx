@@ -1,10 +1,8 @@
-import { createDirectus, rest, staticToken, readItem } from '@directus/sdk'
+import { createDirectus, readItem, rest, staticToken } from '@directus/sdk'
 
 export async function pay(api_url: string, api_token: string, orderid: string) {
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
-
     const result = await client.request(readItem('payment', orderid))
-    console.log(result)
 
     const buyerEmail = result.buyerEmail
     const buyerPhone = result.buyerPhone

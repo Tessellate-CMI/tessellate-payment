@@ -1,4 +1,4 @@
-import { createDirectus, rest, staticToken, readItem } from '@directus/sdk'
+import { createDirectus, readItem, rest, staticToken } from '@directus/sdk'
 import dateFormat from 'dateformat'
 
 export async function pay(
@@ -10,9 +10,7 @@ export async function pay(
     keydata: string
 ) {
     const client = createDirectus(api_url).with(staticToken(api_token)).with(rest())
-
     const result = await client.request(readItem('payment', orderid))
-    console.log(result)
 
     let sha256 = require('sha256')
 
