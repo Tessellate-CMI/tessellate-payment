@@ -11,6 +11,23 @@ export async function pay(api_url: string, api_token: string, orderid: string) {
     const order_id = result.orderid
     const amount = result.amount
 
+    const deadline_passed = ['stems2023']
+
+    for (let i = 0; i < deadline_passed.length; i++) {
+        if (order_id.startsWith(deadline_passed[i])) {
+            return (
+                <html lang='en'>
+                    <head>
+                        <meta charset='UTF-8' />
+                        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+                        <title>Tessellate Payment</title>
+                    </head>
+                    <body>The deadline for payment for this event has passed.</body>
+                </html>
+            )
+        }
+    }
+
     return (
         <html lang='en'>
             <head>
